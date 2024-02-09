@@ -1,0 +1,37 @@
+.NavBar {
+  display: flex;
+  height: 100px;
+  color: var(--background-primary);
+  /* background-color: red;  */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.navButton {
+  background-color: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  opacity: 0.8 transparent;
+  margin: 1rem;
+  text-decoration: none;
+}
+
+/* When you mouse over the navigation links, change their color */
+.navButton:hover {
+  color: #f1f1f1;
+  background-color: var(--foreground-primary);
+}
+
+/* Actively selected NavLink */
+.active {
+  font-weight: bold;
+  background-color: var(--foreground-primary);
+}

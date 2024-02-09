@@ -1,0 +1,22 @@
+.Form {
+}
+
+.header {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: row;
+  /* width: 100%; */
+}
+/* <div className="formSection"></div> */
+
+.name {
+  border-bottom: 1px solid black;
+  font-weight: bold;
+}

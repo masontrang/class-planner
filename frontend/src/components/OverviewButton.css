@@ -1,0 +1,22 @@
+.OverviewButton {
+  width: 25vw;
+  height: 25vw;
+  margin: 1rem;
+  background-color: var(--accent);
+  font-size: x-large;
+  font-weight: bolder;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  opacity: 0.8 transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

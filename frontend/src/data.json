@@ -1,0 +1,98 @@
+{
+  "sectionNames": [
+    "introduction",
+    "warm up",
+    "cardio",
+    "abs",
+    "legs",
+    "sun A",
+    "sun B",
+    "integration",
+    " scupt series",
+    "cardio 2",
+    "abs 2",
+    "legs 2"
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "name": "Cool Class Name",
+      "date": "1/8/24",
+      "sections": [
+        {
+          "id": 1,
+          "name": "intro",
+          "song1": "intro song1",
+          "moves1": ["intro move1", "intro move2", "intro move3"],
+          "song2": "song2",
+          "moves2": ["intro move1", "intro move2", "intro move3"],
+          "notes": "notes"
+        },
+        {
+          "id": 2,
+          "name": "warmup",
+          "song1": "warmupsong1",
+          "moves1": ["warmup move1", "warmup move2", "warmup move3"],
+          "notes": "warmupnotes"
+        },
+        {
+          "id": 3,
+          "name": "cardio",
+          "song1": "cardiosong1",
+          "moves1": ["cardio move1", "cardio move2", "cardio move3"],
+          "notes": "notes"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Cool Class Name",
+      "date": "2/4/24",
+      "sections": [
+        {
+          "id": 1,
+          "name": "sectionName1",
+          "song1": "song1",
+          "moves1": ["move1", "move2", "move3"],
+          "song2": "song2",
+          "moves2": ["move1", "move2", "move3"],
+          "notes": "notes"
+        },
+        {
+          "id": 1,
+          "name": "sectionName",
+          "song1": "song1",
+          "moves1": ["move1", "move2", "move3"],
+          "notes": "notes"
+        }
+      ]
+    },
+
+    {
+      "id": 3,
+      "name": "Cool Class Name",
+      "date": "2/5/24",
+      "sections": [
+        {
+          "id": 1,
+
+          "name": "sectionName1",
+          "song1": "song1",
+          "moves1": ["move1", "move2", "move3"],
+          "song2": "song2",
+          "moves2": ["move1", "move2", "move3"],
+          "notes": "notes"
+        },
+        {
+          "id": 1,
+          "name": "sectionName",
+          "song1": "song1",
+          "moves1": ["move1", "move2", "move3"],
+          "notes": "notes"
+        }
+      ]
+    }
+  ],
+  "moves": ["move1", "move2", "move3"],
+  "songs": ["song1", "song2", "song3"]
+}
