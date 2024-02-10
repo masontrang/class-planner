@@ -40,7 +40,7 @@ function ClassView(props) {
       moves1: ['intro move1', 'intro move2', 'intro move3'],
       song2: 'song2',
       moves2: ['intro move1', 'intro move2', 'intro move3'],
-      notes: 'notes',
+      notes: 'notes1',
     };
     const updatedClass1 = {
       ...data,
