@@ -1,6 +1,7 @@
 import './OverviewContainer.css';
 import { useNavigate } from 'react-router-dom';
 import OverviewButton from './OverviewButton';
+import { useEffect, useState } from 'react';
 function OverviewContainer(props) {
   let navigate = useNavigate();
 
@@ -8,15 +9,29 @@ function OverviewContainer(props) {
     navigate(`/class/${id}`);
   }
 
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    // Fetch data from the backend
+    fetch('http://localhost:8000/classes')
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+  console.log('fetch data', data);
+
   return (
     <div className="OverviewContainer">
-      {props.classes.map((item) => (
-        <OverviewButton
-          id={item.id}
-          date={item.date}
-          onClick={() => clickHandler(item.id)}
-        />
-      ))}
+      {/* {data && data.message} */}
+      {data &&
+        data.map((item) => (
+          <OverviewButton
+            id={item.id}
+            date={item.date}
+            onClick={() => clickHandler(item.id)}
+          />
+        ))}
       <button
         className="OverviewButton"
         onClick={() => navigate('/classCreation')}

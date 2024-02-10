@@ -3,74 +3,184 @@ import ClassCreationContainer from '../components/ClassCreationContainer';
 import './ClassCreation.css';
 import { useState, useEffect } from 'react';
 function ClassCreation() {
-  const classes = [1, 2, 3, 4, 5];
-
   const [isEdit, setIsEdit] = useState(false);
 
+  const newData = {
+    id: Math.floor(Math.random(0, 100) * 100),
+    name: '',
+    date: '',
+    sections: [
+      {
+        id: 1,
+        name: '',
+        song1: '',
+        moves1: [],
+        song2: '',
+        moves2: [],
+        notes: '',
+      },
+    ],
+  };
+
+  const [data, setData] = useState(newData);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
+  const handleSectionChange = (e, index) => {
+    const { name, value } = e.target;
+    const sections = [...data.sections];
+    sections[index] = { ...sections[index], [name]: value };
+    setData({ ...data, sections });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // do something with data
+    console.log(data);
+    fetch('http://localhost:8000/classes/', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+      .then(function (res) {
+        console.log(res);
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+  };
   function clickHandler() {
     const newSection = {
-      id: '01',
-      name: 'New Section',
-      song1: 'intro song1',
-      moves1: ['intro move1', 'intro move2', 'intro move3'],
-      song2: 'song2',
-      moves2: ['intro move1', 'intro move2', 'intro move3'],
-      notes: 'notes',
+      id: data.sections.length + 1,
+      name: '',
+      song1: '',
+      moves1: [''],
+      song2: '',
+      moves2: [''],
+      notes: '',
     };
-    // const updatedClass1 = {
-    //   ...class1,
-    //   sections: [...class1.sections, newSection],
-    // };
+    const updatedClass1 = {
+      ...data,
+      sections: [...data.sections, newSection],
+    };
 
-    // setClass1(updatedClass1);
+    setData(updatedClass1);
   }
-
   return (
     <div className="Page">
       <div className="ClassView">
         {/* <NavBar title="CLASS CREATION" /> */}
-        <form className="Form">
-          <div className="header">
-            <label>
-              <h1>Class: {'123'}</h1>
-            </label>
-            <div className="formSection">
-              <label>
-                <h2>{'Class Name'}</h2>
-              </label>
-              <input placeholder="className"></input>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="name">Class Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={data.name}
+            onChange={handleChange}
+          />
+          <label htmlFor="date">Date:</label>
+          <input
+            type="text"
+            id="date"
+            name="date"
+            value={data.date}
+            onChange={handleChange}
+          />
+          {data.sections.map((section, index) => (
+            <div key={section.id}>
+              <h3>Section {index + 1}</h3>
+              <label htmlFor={`section-name-${index}`}>Section Name:</label>
+              <input
+                type="text"
+                id={`section-name-${index}`}
+                name="name"
+                value={section.name}
+                onChange={(e) => handleSectionChange(e, index)}
+              />
+              <label htmlFor={`section-song1-${index}`}>Song 1:</label>
+              <input
+                type="text"
+                id={`section-song1-${index}`}
+                name="song1"
+                value={section.song1}
+                onChange={(e) => handleSectionChange(e, index)}
+              />
+              <label htmlFor={`section-moves1-${index}`}>Moves 1:</label>
+              <input
+                type="text"
+                id={`section-moves1-${index}`}
+                name="moves1"
+                value={section.moves1.join(', ')}
+                onChange={(e) =>
+                  handleSectionChange(
+                    {
+                      target: {
+                        name: 'moves1',
+                        value: e.target.value.split(', '),
+                      },
+                    },
+                    index
+                  )
+                }
+              />
+              {section.song2 && (
+                <>
+                  <label htmlFor={`section-song2-${index}`}>Song 2:</label>
+                  <input
+                    type="text"
+                    id={`section-song2-${index}`}
+                    name="song2"
+                    value={section.song2}
+                    onChange={(e) => handleSectionChange(e, index)}
+                  />
+                  <label htmlFor={`section-moves2-${index}`}>Moves 2:</label>
+                  <input
+                    type="text"
+                    id={`section-moves2-${index}`}
+                    name="moves2"
+                    value={section.moves2.join(', ')}
+                    onChange={(e) =>
+                      handleSectionChange(
+                        {
+                          target: {
+                            name: 'moves2',
+                            value: e.target.value.split(', '),
+                          },
+                        },
+                        index
+                      )
+                    }
+                  />
+                </>
+              )}
+              <label htmlFor={`section-notes-${index}`}>Notes:</label>
+              <textarea
+                id={`section-notes-${index}`}
+                name="notes"
+                value={section.notes}
+                onChange={(e) => handleSectionChange(e, index)}
+              />
             </div>
-            <div className="formSection">
-              <label>
-                <h3>Date: </h3>
-              </label>
-              <input placeholder="class date"></input>
-            </div>
-          </div>
-
-          <div className="Section">
-            <label className="name">
-              <p className="name">Section: </p>
-            </label>
-            <input className="name"></input>
-
-            <label>
-              <ul passName="song">🎵 </ul>
-            </label>
-            <input className="song"></input>
-
-            <div className="moves">
-              <label>
-                <ul>{'move'}</ul>
-              </label>
-              <input className="move"></input>
-            </div>
-          </div>
+          ))}
+          <button className="BigButton" onClick={clickHandler}>
+            + Add Section
+          </button>
+          <button
+            type="submit"
+            className="BigButtonSave"
+            className="BigButtonSave"
+          >
+            Save
+          </button>
         </form>
-        <button className="BigButton" onClick={clickHandler}>
-          + Add Section
-        </button>
-        <div style={{ display: 'flex' }}>
+
+        {/* <div style={{ display: 'flex' }}>
           <button className="BigButtonSave" onClick={() => setIsEdit(!isEdit)}>
             Save
           </button>
@@ -81,7 +191,7 @@ function ClassCreation() {
           >
             Cancel
           </button>
-        </div>
+        </div> */}
       </div>
       {/* <ClassCreationContainer classes={classes} /> */}
     </div>

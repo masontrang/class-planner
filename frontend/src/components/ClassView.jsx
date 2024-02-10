@@ -7,16 +7,28 @@ import { useParams } from 'react-router-dom';
 function ClassView(props) {
   let { classId } = useParams();
   //   const [classId, setClassId] = useState(props.classId);
-  const [class1, setClass1] = useState(false);
+  //   const [class1, setClass1] = useState(false);
+
+  //   useEffect(() => {
+  //     const selectedClass = data.classes.find(
+  //       (obj) => obj.id === Number(classId)
+  //     );
+  //     console.log('selected', selectedClass);
+  //     console.log('classview', classId);
+  //     setClass1(selectedClass);
+  //   }, [classId]);
+
+  const [data, setData] = useState();
 
   useEffect(() => {
-    const selectedClass = data.classes.find(
-      (obj) => obj.id === Number(classId)
-    );
-    console.log('selected', selectedClass);
-    console.log('classview', classId);
-    setClass1(selectedClass);
-  }, [classId]);
+    // Fetch data from the backend
+    fetch(`http://localhost:8000/classes/${Number(classId)}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data[0]);
+      });
+  }, []);
+  console.log('fetch data', data);
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -31,27 +43,29 @@ function ClassView(props) {
       notes: 'notes',
     };
     const updatedClass1 = {
-      ...class1,
-      sections: [...class1.sections, newSection],
+      ...data,
+      sections: [...data.sections, newSection],
     };
 
-    setClass1(updatedClass1);
+    setData(updatedClass1);
   }
 
   return (
     <div className="ClassView">
-      <div className="header">
-        <h1>Class: {class1.id}</h1>
-        <h2>{class1.name}</h2>
-        <h3>Date: {class1.date}</h3>
-      </div>
+      {data && (
+        <div className="header">
+          <h1>Class: {data.id}</h1>
+          <h2>{data.name}</h2>
+          <h3>Date: {data.date}</h3>
+        </div>
+      )}
 
       <div className="Sections">
         {/* editing */}
         {isEdit ? (
           <>
-            {class1 &&
-              class1.sections.map((section) => (
+            {data &&
+              data.sections.map((section) => (
                 <div className="Section">
                   <form>
                     <label className="name">Section:</label>
@@ -92,8 +106,8 @@ function ClassView(props) {
         ) : (
           // not editing
           <>
-            {class1 &&
-              class1.sections.map((section) => <Section section={section} />)}
+            {data &&
+              data.sections.map((section) => <Section section={section} />)}
             <button className="BigButton" onClick={() => setIsEdit(!isEdit)}>
               Edit
             </button>
