@@ -14,6 +14,11 @@
   --foreground-secondary: #e0efdeff;
   --accent: #b3f2ddff;
 }
+
+.NavBar {
+  flex: 1;
+  margin-bottom: 2rem;
+}
 .Page {
   /* background-color: var(--background-secondary); */
   color: var(--background-primary);
@@ -43,3 +48,31 @@
   margin: 1rem;
 }
 /* CSS HEX */
+/* <div
+        style={{
+          position: 'absolute',
+          right: '0px',
+          top: '0px',
+          borderTopLeftRadius: '1rem',
+          borderBottomLeftRadius: '1rem',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          width: '30vw',
+          height: '100vh',
+          backgroundColor: '#b3f2ddff',
+          zIndex: '1',
+          opacity: '90%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {moves &&
+          moves.map((move) => (
+            <div>
+              <button className="BigButton">
+                {move.name}
+                {/* {move.moveType.name} */
+/* </button>
+            </div>
+          ))}
+      </div> */

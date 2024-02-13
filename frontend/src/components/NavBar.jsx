@@ -15,8 +15,8 @@ function NavBar(props) {
       <NavLink className="navButton" to="classCreation">
         Class Creation
       </NavLink>
-      <NavLink className="navButton" to="/class">
-        Class
+      <NavLink className="navButton" to="/editor">
+        Editor
       </NavLink>
     </div>
   );

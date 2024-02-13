@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 var bodyParser = require('body-parser');
+const request = require('request');
 
 // Create an express app
 const app = express();
@@ -22,7 +23,7 @@ mongoose
 
 // Define a schema for your data using Mongoose
 const classSchema = new mongoose.Schema({
-  id: Number,
+  id: { type: Number, unique: true, required: true },
   name: String,
   date: String,
   sections: Array,
@@ -47,7 +48,7 @@ app.post('/classes', async (req, res) => {
   try {
     const class1 = new Class(req.body);
     await class1.save();
-    res.status(201).send(class1);
+    res.status(201).send({ message: 'class successfully added' });
   } catch (err) {
     res.status(400).send(err);
   }
@@ -63,6 +64,167 @@ app.get('/classes/:id', async (req, res) => {
     console.log('err', err);
   }
 });
+
+const moveTypeSchema = new mongoose.Schema({
+  name: String,
+});
+
+const MoveType = mongoose.model('MoveType', moveTypeSchema);
+
+// get all move types
+app.get('/movetypes', async (req, res) => {
+  try {
+    const movetypes = await MoveType.find({});
+    res.json(movetypes);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log('err', err);
+  }
+});
+
+// add move type
+app.post('/addmovetype', async (req, res) => {
+  try {
+    const moveType = new MoveType(req.body);
+    console.log(moveType);
+    await moveType.save();
+    res.status(201).send({ message: 'moveType successfully added' });
+    console.log('new moveType added', moveType);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+const moveSchema = new mongoose.Schema({
+  name: String,
+  moveType: { type: mongoose.Schema.Types.ObjectId, ref: 'MoveType' },
+  description: String,
+});
+
+const Move = mongoose.model('Move', moveSchema);
+
+// get all moves
+app.get('/moves', async (req, res) => {
+  try {
+    const moves = await Move.find({}).populate('moveType');
+    console.log('moves', moves);
+    res.json(moves);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log('err', err);
+  }
+});
+
+// add move
+app.post('/addmove', async (req, res) => {
+  try {
+    const move = new Move(req.body);
+    console.log(move);
+    await move.save();
+    res.status(201).send({ message: 'move successfully added' });
+    console.log('new move added', move);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+const sectionSchema = new mongoose.Schema({
+  name: String,
+});
+
+const Section = mongoose.model('Section', sectionSchema);
+
+// get all moves
+app.get('/sections', async (req, res) => {
+  try {
+    const sections = await Move.find({});
+    res.json(sections);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log('err', err);
+  }
+});
+
+// add move
+app.post('/addsection', async (req, res) => {
+  try {
+    const section = new Section(req.body);
+    console.log(section);
+    await section.save();
+    res.status(201).send({ message: 'section successfully added' });
+    console.log('new move added', section);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// Songs
+
+const songTypeSchema = new mongoose.Schema({
+  name: String,
+});
+
+const SongType = mongoose.model('SongType', songTypeSchema);
+
+// get all move types
+app.get('/songtypes', async (req, res) => {
+  try {
+    const songtypes = await SongType.find({});
+    res.json(songtypes);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log('err', err);
+  }
+});
+
+// add move type
+app.post('/addsongtype', async (req, res) => {
+  try {
+    const songType = new SongType(req.body);
+    console.log(songType);
+    await songType.save();
+    res.status(201).send({ message: 'songType successfully added' });
+    console.log('new moveType added', songType);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+const songSchema = new mongoose.Schema({
+  name: String,
+  artist: String,
+  songType: { type: mongoose.Schema.Types.ObjectId, ref: 'SongType' },
+});
+
+const Song = mongoose.model('Song', moveSchema);
+
+// get all moves
+app.get('/songs', async (req, res) => {
+  try {
+    const songs = await Song.find({}).populate('songType');
+    console.log('songs', songs);
+    res.json(songs);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log('err', err);
+  }
+});
+
+// add move
+app.post('/addsong', async (req, res) => {
+  try {
+    const song = new Song(req.body);
+    console.log(song);
+    await song.save();
+    res.status(201).send({ message: 'song successfully added' });
+    console.log('new song added', song);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// spotify
+// access token
 
 // Start the server and listen on a port
 const port = process.env.PORT || 3000;

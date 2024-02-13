@@ -1,17 +1,18 @@
 import NavBar from '../components/NavBar';
 import ClassCreationContainer from '../components/ClassCreationContainer';
 import './ClassCreation.css';
+import Selector from '../components/DetailSelector';
 import { useState, useEffect } from 'react';
 function ClassCreation() {
   const [isEdit, setIsEdit] = useState(false);
 
   const newData = {
-    id: Math.floor(Math.random(0, 100) * 100),
+    id: '0',
     name: '',
     date: '',
     sections: [
       {
-        id: 1,
+        id_1: '',
         name: '',
         song1: '',
         moves1: [],
@@ -23,6 +24,17 @@ function ClassCreation() {
   };
 
   const [data, setData] = useState(newData);
+  const [moves, setMoves] = useState();
+
+  useEffect(() => {
+    // Fetch data from the backend
+    fetch('http://localhost:8000/moves')
+      .then((response) => response.json())
+      .then((data) => {
+        setMoves(data);
+      });
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -48,7 +60,8 @@ function ClassCreation() {
       body: JSON.stringify(data),
     })
       .then(function (res) {
-        console.log(res);
+        console.log('res', res);
+        // setMessage(res.message);
       })
       .catch(function (res) {
         console.log(res);
@@ -73,6 +86,34 @@ function ClassCreation() {
   }
   return (
     <div className="Page">
+      <div
+        style={{
+          position: 'absolute',
+          right: '0px',
+          top: '0px',
+          borderTopLeftRadius: '1rem',
+          borderBottomLeftRadius: '1rem',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          width: '30vw',
+          height: '100vh',
+          backgroundColor: '#b3f2ddff',
+          zIndex: '1',
+          opacity: '90%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {moves &&
+          moves.map((move) => (
+            <div>
+              <button className="BigButton">
+                {move.name}
+                {/* {move.moveType.name} */}
+              </button>
+            </div>
+          ))}
+      </div>
       <div className="ClassView">
         {/* <NavBar title="CLASS CREATION" /> */}
         <form onSubmit={handleSubmit}>
@@ -171,13 +212,10 @@ function ClassCreation() {
           <button className="BigButton" onClick={clickHandler}>
             + Add Section
           </button>
-          <button
-            type="submit"
-            className="BigButtonSave"
-            className="BigButtonSave"
-          >
+          <button type="submit" className="BigButtonSave">
             Save
           </button>
+          {/* {message} */}
         </form>
 
         {/* <div style={{ display: 'flex' }}>
