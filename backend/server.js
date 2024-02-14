@@ -107,7 +107,7 @@ const Move = mongoose.model('Move', moveSchema);
 app.get('/moves', async (req, res) => {
   try {
     const moves = await Move.find({}).populate('moveType');
-    console.log('moves', moves);
+
     res.json(moves);
   } catch (err) {
     res.status(500).send(err);
@@ -119,7 +119,7 @@ app.get('/moves', async (req, res) => {
 app.post('/addmove', async (req, res) => {
   try {
     const move = new Move(req.body);
-    console.log(move);
+
     await move.save();
     res.status(201).send({ message: 'move successfully added' });
     console.log('new move added', move);
@@ -149,7 +149,7 @@ app.get('/sections', async (req, res) => {
 app.post('/addsection', async (req, res) => {
   try {
     const section = new Section(req.body);
-    console.log(section);
+
     await section.save();
     res.status(201).send({ message: 'section successfully added' });
     console.log('new move added', section);
@@ -192,29 +192,36 @@ app.post('/addsongtype', async (req, res) => {
 
 const songSchema = new mongoose.Schema({
   name: String,
-  artist: String,
-  songType: { type: mongoose.Schema.Types.ObjectId, ref: 'SongType' },
+  artist: Array,
+  album: String,
+  listenLink: String,
+  art: String,
+  spotifyId: String,
+  spotifyUri: String,
+  songType: String,
+  durationMs: Number,
 });
 
-const Song = mongoose.model('Song', moveSchema);
+const Song = mongoose.model('Song', songSchema);
 
 // get all moves
 app.get('/songs', async (req, res) => {
   try {
-    const songs = await Song.find({}).populate('songType');
-    console.log('songs', songs);
+    const songs = await Song.find({});
+
     res.json(songs);
+    // console.log('songs', songs);
   } catch (err) {
     res.status(500).send(err);
     console.log('err', err);
   }
 });
 
-// add move
+// add song
 app.post('/addsong', async (req, res) => {
   try {
     const song = new Song(req.body);
-    console.log(song);
+    console.log('songbody', req.body);
     await song.save();
     res.status(201).send({ message: 'song successfully added' });
     console.log('new song added', song);
@@ -223,8 +230,98 @@ app.post('/addsong', async (req, res) => {
   }
 });
 
+// delete song
+// app.post('/deletesong', async (req, res) => {
+//   try {
+//     console.log('req', req.body.songId);
+//     await Song.remove({ _id: ObjectId(req.body.songId) }, callback);
+//     // const res = await Song.deleteOne(req.body.songId);
+//     // await song.save();
+//     res.status(201).send({ message: 'song successfully deleted' });
+//     // console.log('new song added', song);
+//   } catch (err) {
+//     res.status(400).send(err);
+//   }
+// });
+
+app.delete('/song/:id', async (req, res) => {
+  try {
+    // Await the deletion and store the result
+
+    const result = await Song.findByIdAndDelete(req.params.id);
+    // Log the result
+    console.log(result);
+    // Send a status code of 200 (OK) to the client
+    res.sendStatus(200);
+  } catch (err) {
+    // Handle any errors
+    console.error(err);
+    // Send a status code of 500 (Internal Server Error) to the client
+    res.sendStatus(500);
+  }
+});
+
 // spotify
 // access token
+const client_id = process.env.SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_SECRET;
+const auth_token = Buffer.from(`${client_id}:${client_secret}`).toString(
+  'base64'
+);
+let access_token = null;
+
+var options = {
+  url: 'https://accounts.spotify.com/api/token',
+  headers: {
+    Authorization: 'Basic ' + auth_token,
+  },
+  form: {
+    grant_type: 'client_credentials',
+  },
+  json: true,
+};
+
+request.post(options, function (error, response, body) {
+  if (!error && response.statusCode === 200) {
+    access_token = body.access_token;
+    console.log('success', access_token);
+  } else {
+    console.error('Error getting access token: ', error || body);
+  }
+});
+
+app.get('/search-song', async (req, res) => {
+  const searchTerm = req.query.q;
+  if (!searchTerm)
+    return res
+      .status(400)
+      .json({ error: 'Missing search term in query parameters' });
+
+  var options = {
+    url: 'https://api.spotify.com/v1/search',
+    qs: {
+      q: searchTerm,
+      type: 'track',
+    },
+    headers: {
+      Authorization: 'Bearer ' + access_token,
+    },
+    json: true,
+  };
+
+  request.get(options, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      res.status(200).json(body);
+      console.log('success', body.tracks.items[0]);
+    } else {
+      console.error('Error searching for song:', error || body);
+      res
+        .status(response.statusCode || 500)
+        .json({ error: 'Failed to search for song' });
+      // console.error('Error getting access token: ', error || body);
+    }
+  });
+});
 
 // Start the server and listen on a port
 const port = process.env.PORT || 3000;

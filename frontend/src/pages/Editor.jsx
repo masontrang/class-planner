@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import SongSearch from '../components/SongSearch';
 
 import './Editor.css';
 
@@ -134,6 +135,7 @@ function Editor() {
         {newMove.newMoveType}
       </div>
       <h1>SONGS</h1>
+      <SongSearch />
     </div>
   );
 }

@@ -14,24 +14,26 @@ function ClassCreation() {
       {
         id_1: '',
         name: '',
-        song1: '',
-        moves1: [],
-        song2: '',
-        moves2: [],
-        notes: '',
+        sequence: [
+          {
+            song: '',
+            moves: [''],
+            notes: '',
+          },
+        ],
       },
     ],
   };
 
   const [data, setData] = useState(newData);
-  const [moves, setMoves] = useState();
+  const [allMoves, setAllMoves] = useState();
 
   useEffect(() => {
     // Fetch data from the backend
     fetch('http://localhost:8000/moves')
       .then((response) => response.json())
       .then((data) => {
-        setMoves(data);
+        setAllMoves(data);
       });
   }, []);
 
@@ -71,11 +73,13 @@ function ClassCreation() {
     const newSection = {
       id: data.sections.length + 1,
       name: '',
-      song1: '',
-      moves1: [''],
-      song2: '',
-      moves2: [''],
-      notes: '',
+      sequence: [
+        {
+          song: '',
+          moves: [''],
+          notes: '',
+        },
+      ],
     };
     const updatedClass1 = {
       ...data,
@@ -84,9 +88,37 @@ function ClassCreation() {
 
     setData(updatedClass1);
   }
+
+  function addSequence(index, index2) {
+    let newData = { ...data };
+    const newSequence = {
+      song: '',
+      moves: [''],
+      notes: '',
+    };
+
+    console.log('section', index, 'sequence', index2);
+    console.log('pushto', newData.sections[index].sequence[index2]);
+    newData.sections[index].sequence.push(newSequence);
+
+    setData(newData);
+  }
+
+  function addMove(index, index2) {
+    let newData = { ...data };
+    const newSequence = {
+      song: '',
+      moves: [''],
+      notes: '',
+    };
+
+    newData.sections[index].sequence[index2].moves.push('New Move');
+
+    setData(newData);
+  }
   return (
     <div className="Page">
-      <div
+      {/* <div
         style={{
           position: 'absolute',
           right: '0px',
@@ -104,16 +136,16 @@ function ClassCreation() {
           flexDirection: 'column',
         }}
       >
-        {moves &&
-          moves.map((move) => (
+        {allMoves &&
+          allMoves.map((move) => (
             <div>
               <button className="BigButton">
                 {move.name}
-                {/* {move.moveType.name} */}
+                {move.moveType.name}
               </button>
             </div>
           ))}
-      </div>
+      </div> */}
       <div className="ClassView">
         {/* <NavBar title="CLASS CREATION" /> */}
         <form onSubmit={handleSubmit}>
@@ -144,33 +176,74 @@ function ClassCreation() {
                 value={section.name}
                 onChange={(e) => handleSectionChange(e, index)}
               />
-              <label htmlFor={`section-song1-${index}`}>Song 1:</label>
-              <input
-                type="text"
-                id={`section-song1-${index}`}
-                name="song1"
-                value={section.song1}
-                onChange={(e) => handleSectionChange(e, index)}
-              />
-              <label htmlFor={`section-moves1-${index}`}>Moves 1:</label>
-              <input
-                type="text"
-                id={`section-moves1-${index}`}
-                name="moves1"
-                value={section.moves1.join(', ')}
-                onChange={(e) =>
-                  handleSectionChange(
-                    {
-                      target: {
-                        name: 'moves1',
-                        value: e.target.value.split(', '),
-                      },
-                    },
-                    index
-                  )
-                }
-              />
-              {section.song2 && (
+
+              {section.sequence.map((seq, index2) => (
+                <>
+                  <label htmlFor={`section-song1-${index}`}>
+                    Song {index2 + 1}:
+                  </label>
+                  <input
+                    type="text"
+                    id={`section-song1-${index}`}
+                    name="song1"
+                    value={seq.song}
+                    onChange={(e) => handleSectionChange(e, index)}
+                  />
+                  <label htmlFor={`section-moves1-${index}`}>Moves:</label>
+                  <input
+                    type="text"
+                    id={`section-moves1-${index}`}
+                    name="moves1"
+                    value={seq.moves.join(', ')}
+                    onChange={(e) =>
+                      handleSectionChange(
+                        {
+                          target: {
+                            name: 'moves',
+                            value: e.target.value.split(', '),
+                          },
+                        },
+                        index
+                      )
+                    }
+                  />
+
+                  <button
+                    className="BigButton"
+                    onClick={
+                      () => {
+                        addMove(index, index2);
+                      }
+                      // console.log('index', index, 'index2', index2)
+                    }
+                  >
+                    + Add Move
+                  </button>
+
+                  {/* <label htmlFor={`section-notes-${index}`}>Notes:</label>
+                  <textarea
+                    id={`section-notes-${index}`}
+                    name="notes"
+                    value={section.notes}
+                    onChange={(e) => handleSectionChange(e, index)}
+                  /> */}
+                  {index2 === section.sequence.length - 1 && (
+                    <button
+                      className="BigButton"
+                      onClick={
+                        () => {
+                          addSequence(index, index2);
+                        }
+                        // console.log('index', index, 'index2', index2)
+                      }
+                    >
+                      + Add Song
+                    </button>
+                  )}
+                </>
+              ))}
+
+              {/* {section.song2 && (
                 <>
                   <label htmlFor={`section-song2-${index}`}>Song 2:</label>
                   <input
@@ -199,14 +272,7 @@ function ClassCreation() {
                     }
                   />
                 </>
-              )}
-              <label htmlFor={`section-notes-${index}`}>Notes:</label>
-              <textarea
-                id={`section-notes-${index}`}
-                name="notes"
-                value={section.notes}
-                onChange={(e) => handleSectionChange(e, index)}
-              />
+              )} */}
             </div>
           ))}
           <button className="BigButton" onClick={clickHandler}>
