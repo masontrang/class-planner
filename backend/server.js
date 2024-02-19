@@ -25,7 +25,7 @@ mongoose
 const classSchema = new mongoose.Schema({
   id: { type: Number, unique: true, required: true },
   name: String,
-  date: String,
+  date: Date,
   sections: Array,
 });
 
@@ -137,7 +137,7 @@ const Section = mongoose.model('Section', sectionSchema);
 // get all moves
 app.get('/sections', async (req, res) => {
   try {
-    const sections = await Move.find({});
+    const sections = await Section.find({});
     res.json(sections);
   } catch (err) {
     res.status(500).send(err);

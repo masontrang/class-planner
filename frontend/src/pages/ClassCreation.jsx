@@ -2,18 +2,19 @@ import NavBar from '../components/NavBar';
 import ClassCreationContainer from '../components/ClassCreationContainer';
 import './ClassCreation.css';
 import Selector from '../components/DetailSelector';
+import Section from '../components/Section';
 import { useState, useEffect } from 'react';
 function ClassCreation() {
   const [isEdit, setIsEdit] = useState(false);
-
+  const [classesLength, setClassesLength] = useState();
   const newData = {
-    id: '0',
+    id: classesLength,
     name: '',
     date: '',
     sections: [
       {
         id_1: '',
-        name: '',
+        name: 'Introduction',
         sequence: [
           {
             song: '',
@@ -34,20 +35,31 @@ function ClassCreation() {
       .then((response) => response.json())
       .then((data) => {
         setAllMoves(data);
+        setClassesLength(data.length);
       });
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setData({ ...data, [name]: value });
+  // };
 
-  const handleSectionChange = (e, index) => {
-    const { name, value } = e.target;
-    const sections = [...data.sections];
-    sections[index] = { ...sections[index], [name]: value };
-    setData({ ...data, sections });
-  };
+  // const handleSectionChange = (e, index) => {
+  //   const { name, value } = e.target;
+  //   const sections = [...data.sections];
+  //   sections[index] = { ...sections[index], [name]: value };
+  //   setData({ ...data, sections });
+  // };
+
+  // const handleSequenceChange = (e, index, index2) => {
+  //   const { name, value } = e.target;
+  //   const sections = [...data.sections];
+  //   sections[index].sequence[index2] = {
+  //     ...sections[index].sequence[index2],
+  //     [name]: value,
+  //   };
+  //   setData({ ...data, sections });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,9 +81,85 @@ function ClassCreation() {
         console.log(res);
       });
   };
-  function clickHandler() {
+  // function clickHandler() {
+  //   const newSection = {
+  //     id: data.sections.length + 1,
+  //     name: '',
+  //     sequence: [
+  //       {
+  //         song: '',
+  //         moves: [''],
+  //         notes: '',
+  //       },
+  //     ],
+  //   };
+  //   const updatedClass1 = {
+  //     ...data,
+  //     sections: [...data.sections, newSection],
+  //   };
+
+  //   setData(updatedClass1);
+  // }
+
+  // function addSequence(index, index2) {
+  //   let newData = { ...data };
+  //   const newSequence = {
+  //     song: '',
+  //     moves: [''],
+  //     notes: '',
+  //   };
+
+  //   console.log('section', index, 'sequence', index2);
+  //   console.log('pushto', newData.sections[index].sequence[index2]);
+  //   newData.sections[index].sequence.push(newSequence);
+
+  //   setData(newData);
+  // }
+
+  // function addMove(index, index2) {
+  //   let newData = { ...data };
+  //   const newSequence = {
+  //     song: '',
+  //     moves: [''],
+  //     notes: '',
+  //   };
+
+  //   newData.sections[index].sequence[index2].moves.push('New Move');
+
+  //   setData(newData);
+  // }
+
+  // A function to handle the change of the data name
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    setData({ ...data, name: newName });
+  };
+
+  // A function to handle the change of the data date
+  const handleDateChange = (e) => {
+    const newDate = e.target.value;
+    setData({ ...data, date: newDate });
+  };
+
+  // A function to handle the addition of a new section
+  const handleAddSection = () => {
+    const sectionNames = [
+      'introduction',
+      'warm up',
+      'cardio',
+      'abs',
+      'legs',
+      'sun A',
+      'sun B',
+      'integration',
+      'sculpt series',
+      'cardio 2',
+      'abs 2',
+      'legs 2',
+    ];
+
     const newSection = {
-      id: data.sections.length + 1,
+      id_1: '',
       name: '',
       sequence: [
         {
@@ -81,208 +169,62 @@ function ClassCreation() {
         },
       ],
     };
-    const updatedClass1 = {
-      ...data,
-      sections: [...data.sections, newSection],
-    };
+    setData({ ...data, sections: [...data.sections, newSection] });
+  };
 
-    setData(updatedClass1);
-  }
+  // A function to handle the removal of a section by index
+  const handleRemoveSection = (index) => {
+    if (data.sections.length > 1) {
+      const newSections = data.sections.filter((_, i) => i !== index);
+      setData({ ...data, sections: newSections });
+    }
+  };
 
-  function addSequence(index, index2) {
-    let newData = { ...data };
-    const newSequence = {
-      song: '',
-      moves: [''],
-      notes: '',
-    };
+  // A function to handle the update of a section by index
+  const handleUpdateSection = (index, newSection) => {
+    const newSections = data.sections.map((sec, i) =>
+      i === index ? newSection : sec
+    );
+    setData({ ...data, sections: newSections });
+  };
 
-    console.log('section', index, 'sequence', index2);
-    console.log('pushto', newData.sections[index].sequence[index2]);
-    newData.sections[index].sequence.push(newSequence);
-
-    setData(newData);
-  }
-
-  function addMove(index, index2) {
-    let newData = { ...data };
-    const newSequence = {
-      song: '',
-      moves: [''],
-      notes: '',
-    };
-
-    newData.sections[index].sequence[index2].moves.push('New Move');
-
-    setData(newData);
-  }
   return (
     <div className="Page">
-      {/* <div
-        style={{
-          position: 'absolute',
-          right: '0px',
-          top: '0px',
-          borderTopLeftRadius: '1rem',
-          borderBottomLeftRadius: '1rem',
-          paddingLeft: '1rem',
-          paddingRight: '1rem',
-          width: '30vw',
-          height: '100vh',
-          backgroundColor: '#b3f2ddff',
-          zIndex: '1',
-          opacity: '90%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {allMoves &&
-          allMoves.map((move) => (
-            <div>
-              <button className="BigButton">
-                {move.name}
-                {move.moveType.name}
-              </button>
-            </div>
-          ))}
-      </div> */}
       <div className="ClassView">
         {/* <NavBar title="CLASS CREATION" /> */}
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Class Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={data.name}
-            onChange={handleChange}
-          />
-          <label htmlFor="date">Date:</label>
-          <input
-            type="text"
-            id="date"
-            name="date"
-            value={data.date}
-            onChange={handleChange}
-          />
-          {data.sections.map((section, index) => (
-            <div key={section.id}>
-              <h3>Section {index + 1}</h3>
-              <label htmlFor={`section-name-${index}`}>Section Name:</label>
-              <input
-                type="text"
-                id={`section-name-${index}`}
-                name="name"
-                value={section.name}
-                onChange={(e) => handleSectionChange(e, index)}
+        <div className="data">
+          <div className="data-header">
+            <input
+              type="text"
+              value={data.name}
+              onChange={handleNameChange}
+              placeholder="Class name"
+            />
+            <input
+              type="date"
+              value={data.date}
+              onChange={handleDateChange}
+              placeholder="Data date"
+            />
+          </div>
+          <div className="data-body">
+            {data.sections.map((sec, i) => (
+              <Section
+                key={i}
+                section={sec}
+                updateSection={(newSec) => handleUpdateSection(i, newSec)}
+                removeSection={() => handleRemoveSection(i)}
+                addSection={handleAddSection}
+                sectionsLength={data.sections.length}
               />
-
-              {section.sequence.map((seq, index2) => (
-                <>
-                  <label htmlFor={`section-song1-${index}`}>
-                    Song {index2 + 1}:
-                  </label>
-                  <input
-                    type="text"
-                    id={`section-song1-${index}`}
-                    name="song1"
-                    value={seq.song}
-                    onChange={(e) => handleSectionChange(e, index)}
-                  />
-                  <label htmlFor={`section-moves1-${index}`}>Moves:</label>
-                  <input
-                    type="text"
-                    id={`section-moves1-${index}`}
-                    name="moves1"
-                    value={seq.moves.join(', ')}
-                    onChange={(e) =>
-                      handleSectionChange(
-                        {
-                          target: {
-                            name: 'moves',
-                            value: e.target.value.split(', '),
-                          },
-                        },
-                        index
-                      )
-                    }
-                  />
-
-                  <button
-                    className="BigButton"
-                    onClick={
-                      () => {
-                        addMove(index, index2);
-                      }
-                      // console.log('index', index, 'index2', index2)
-                    }
-                  >
-                    + Add Move
-                  </button>
-
-                  {/* <label htmlFor={`section-notes-${index}`}>Notes:</label>
-                  <textarea
-                    id={`section-notes-${index}`}
-                    name="notes"
-                    value={section.notes}
-                    onChange={(e) => handleSectionChange(e, index)}
-                  /> */}
-                  {index2 === section.sequence.length - 1 && (
-                    <button
-                      className="BigButton"
-                      onClick={
-                        () => {
-                          addSequence(index, index2);
-                        }
-                        // console.log('index', index, 'index2', index2)
-                      }
-                    >
-                      + Add Song
-                    </button>
-                  )}
-                </>
-              ))}
-
-              {/* {section.song2 && (
-                <>
-                  <label htmlFor={`section-song2-${index}`}>Song 2:</label>
-                  <input
-                    type="text"
-                    id={`section-song2-${index}`}
-                    name="song2"
-                    value={section.song2}
-                    onChange={(e) => handleSectionChange(e, index)}
-                  />
-                  <label htmlFor={`section-moves2-${index}`}>Moves 2:</label>
-                  <input
-                    type="text"
-                    id={`section-moves2-${index}`}
-                    name="moves2"
-                    value={section.moves2.join(', ')}
-                    onChange={(e) =>
-                      handleSectionChange(
-                        {
-                          target: {
-                            name: 'moves2',
-                            value: e.target.value.split(', '),
-                          },
-                        },
-                        index
-                      )
-                    }
-                  />
-                </>
-              )} */}
-            </div>
-          ))}
-          <button className="BigButton" onClick={clickHandler}>
-            + Add Section
+            ))}
+          </div>
+        </div>
+        <div className="data-footer">
+          <button onClick={handleSubmit} className="button-sm-confirm">
+            Submit
           </button>
-          <button type="submit" className="BigButtonSave">
-            Save
-          </button>
-          {/* {message} */}
-        </form>
+        </div>
 
         {/* <div style={{ display: 'flex' }}>
           <button className="BigButtonSave" onClick={() => setIsEdit(!isEdit)}>

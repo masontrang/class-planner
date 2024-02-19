@@ -40,7 +40,7 @@ function SongSearch() {
       listenLink: song1.external_urls.spotify,
       art: song1.album.images[1].url,
       spotifyId: song1.id,
-      spotifyUrl: song1.uri,
+      spotifyUri: song1.uri,
     };
     setSongs([
       // with a new array
@@ -76,10 +76,10 @@ function SongSearch() {
       });
   }
 
-  function deleteHandler(e, songid) {
+  function deleteHandler(e, songid, spotifyId) {
     e.preventDefault();
 
-    setSongs(songs.filter((song) => song._id !== songid));
+    setSongs(songs.filter((song) => song.spotifyId !== spotifyId));
 
     fetch(`http://localhost:8000/song/${songid}`, {
       //   headers: {
@@ -131,20 +131,27 @@ function SongSearch() {
                     {((item.durationMs % 60000) / 1000).toFixed(0)} seconds
                   </td>
                   <td>
-                    <a href={item.listenLink}>Listen</a>
+                    <a href={item.listenLink}>
+                      <button className="button-sm">Listen</button>
+                    </a>
                   </td>
                   <td>
                     <img
                       src={item.art}
                       alt="albumArt"
-                      width="300"
-                      height="300"
+                      width="80"
+                      height="80"
                     ></img>
                   </td>
                   <td>{item.spotifyId}</td>
                   <td> {item.spotifyUri}</td>
                   <td>
-                    <button onClick={(e) => deleteHandler(e, item._id)}>
+                    <button
+                      onClick={(e) =>
+                        deleteHandler(e, item._id, item.spotifyId)
+                      }
+                      className="button-sm"
+                    >
                       Remove
                     </button>
                   </td>
@@ -165,7 +172,9 @@ function SongSearch() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         ></input>
-        <button type="submit">Submit</button>
+        <button type="submit" className="button-sm">
+          Submit
+        </button>
       </form>
       <table className="songTable">
         <thead>
@@ -197,23 +206,37 @@ function SongSearch() {
                   {((item.duration_ms % 60000) / 1000).toFixed(0)} seconds
                 </td>
                 <td>
-                  <a href={item.external_urls.spotify}>Listen</a>
+                  <a href={item.external_urls.spotify}>
+                    <button className="button-sm">Listen</button>
+                  </a>
                 </td>
                 <td>
                   <img
-                    src={item.album.images[1].url}
+                    src={item.album.images[0].url}
                     alt="albumArt"
-                    width="300"
-                    height="300"
+                    width="80"
+                    height="80"
                   ></img>
                 </td>
                 <td>{item.id}</td>
                 <td> {item.uri}</td>
                 {/* <form><select></select></form> */}
                 <td>
-                  <button onClick={(e) => clickHandler(e, item)}>
-                    Add to Library
-                  </button>
+                  {songs.find((o) => o.spotifyId === item.id) ? (
+                    <button
+                      className="button-sm"
+                      style={{ backgroundColor: '#b3f2ddff' }}
+                    >
+                      In Library
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => clickHandler(e, item)}
+                      className="button-sm"
+                    >
+                      Add to Library
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

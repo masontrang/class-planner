@@ -9,13 +9,13 @@ function NavBar(props) {
       <NavLink className="navButton" to="/">
         Home
       </NavLink>
-      <NavLink className="navButton" to="/overview">
+      <NavLink className="navButton" to="overview">
         Overview
       </NavLink>
-      <NavLink className="navButton" to="classCreation">
-        Class Creation
+      <NavLink className="navButton" to="classcreation">
+        Class Creator
       </NavLink>
-      <NavLink className="navButton" to="/editor">
+      <NavLink className="navButton" to="editor">
         Editor
       </NavLink>
     </div>

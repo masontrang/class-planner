@@ -1,4 +1,22 @@
-.Section {
+@media only screen and (max-width: 600px) {
+  .section {
+    margin: 2px;
+    padding: 2px;
+
+  }
+}
+
+.section {
+  background-color: #ffc4c4;
+  /* margin: 1rem; */
+  border-bottom: 2px solid gray;
+  /* padding-bottom: 1rem; */
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* flex: 1; */
 }
 
 .name {
@@ -6,8 +24,17 @@
   font-weight: bold;
 }
 
-.song {
+.section-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.moves {
+.section-body {
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  /* width: 25%; */
 }

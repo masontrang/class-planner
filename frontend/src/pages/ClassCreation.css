@@ -20,3 +20,29 @@
   border-bottom: 1px solid black;
   font-weight: bold;
 }
+
+/* below is new */
+.data {
+  display: flex;
+  flex-direction: column;
+  /* background-color: black; */
+}
+
+.data-header {
+  /* background-color: yellow; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--accent);
+  width: 50%;
+  /* margin: 1rem; */
+  border-radius: 1rem;
+  border-bottom: 2px solid gray;
+  align-self: center;
+}
+.data-body {
+}
+.data-footer {
+  display: flex;
+  justify-content: center;
+}

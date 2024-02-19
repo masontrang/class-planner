@@ -49,8 +49,8 @@ function Editor() {
       });
   }
   return (
-    <div>
-      <div>
+    <div className="Page">
+      <div className="Editor">
         <h1>MOVES</h1>
         {data && (
           <table className="table">
@@ -129,13 +129,18 @@ function Editor() {
             ))}
           </select>
 
-          <button type="submit">Add Move</button>
+          <button type="submit" className="button-sm">
+            Add Move
+          </button>
         </form>
         {newMove.newMoveName}
         {newMove.newMoveType}
       </div>
-      <h1>SONGS</h1>
-      <SongSearch />
+      <div className="Songs">
+        {' '}
+        <h1>SONGS</h1>
+        <SongSearch />
+      </div>
     </div>
   );
 }
