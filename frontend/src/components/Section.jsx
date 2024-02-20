@@ -7,6 +7,7 @@ function Section({
   updateSection,
   removeSection,
   addSection,
+  isView,
 }) {
   const [sectionTypes, setSectionTypes] = useState();
 
@@ -85,36 +86,45 @@ function Section({
           placeholder="Section name"
         /> */}
         {/* <label>Section Name</label> */}
-        <select
-          id="sectionType"
-          name="sectionType"
-          value={section.name}
-          onChange={handleNameChange}
-        >
-          {sectionTypes &&
-            sectionTypes.map((sectionType) => (
-              <option value={sectionType.name}>{sectionType.name}</option>
-            ))}
-        </select>
-        <div className="buttonContainer">
-          {sectionsLength > 1 && (
-            <button onClick={removeSection} className="button-sm">
-              {/* Remove Section */} -
-            </button>
-          )}
-          <button onClick={addSection} className="button-sm-confirm">
-            {/* Add Section */} +
-          </button>
-        </div>
+
+        {!isView ? (
+          <>
+            <select
+              id="sectionType"
+              name="sectionType"
+              value={section.name}
+              onChange={handleNameChange}
+            >
+              {sectionTypes &&
+                sectionTypes.map((sectionType) => (
+                  <option value={sectionType.name}>{sectionType.name}</option>
+                ))}
+            </select>{' '}
+            <div className="buttonContainer">
+              {sectionsLength > 1 && (
+                <button onClick={removeSection} className="button-sm">
+                  {/* Remove Section */} -
+                </button>
+              )}
+              <button onClick={addSection} className="button-sm-confirm">
+                {/* Add Section */} +
+              </button>
+            </div>
+          </>
+        ) : (
+          <p>{section.name}</p>
+        )}
       </div>
       <div className="section-body">
         {section.sequence.map((seq, i) => (
           <Sequence
             key={i}
+            length={section.sequence.length}
             sequence={seq}
             updateSequence={(newSeq) => handleUpdateSequence(i, newSeq)}
             removeSequence={() => handleRemoveSequence(i)}
             handleAddSequence={handleAddSequence}
+            isView={isView}
           />
         ))}
       </div>

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import './Sequence.css';
 import DetailSelector from './DetailSelector';
 function Sequence({
+  isView,
+  length,
   sequence,
   updateSequence,
   removeSequence,
@@ -71,41 +73,63 @@ function Sequence({
     <div className="sequence">
       <div className="sequence-header">
         <label>🎵</label>
-        <input
-          type="text"
-          value={sequence.song}
-          onChange={handleSongChange}
-          placeholder="Song name"
-        />
-        <div className="buttonContainer">
-          <button onClick={removeSequence} className="button-sm">
-            {/* Remove Song */} -
-          </button>
-          <button onClick={handleAddSequence} className="button-sm-confirm">
-            {/* Add Song */} +
-          </button>
-        </div>
+
+        {!isView ? (
+          <>
+            <input
+              type="text"
+              value={sequence.song}
+              onChange={handleSongChange}
+              placeholder="Song name"
+            />
+            <div className="buttonContainer">
+              {length > 1 && (
+                <button onClick={removeSequence} className="button-sm">
+                  {/* Remove Song */} -
+                </button>
+              )}
+              <button onClick={handleAddSequence} className="button-sm-confirm">
+                {/* Add Song */} +
+              </button>
+            </div>
+          </>
+        ) : (
+          <p className="text">{sequence.song}</p>
+        )}
       </div>
       <div className="sequence-body">
         <div className="moves">
           {sequence.moves.map((move, i) => (
             <div key={i} className="move">
               🧘🏻
-              {/* <input
-                type="text"
-                value={move}
-                onChange={(e) => handleMoveChange(i, e)}
-                placeholder="Move name"
-              /> */}
-              {move}
-              <button
-                className="button-sm"
-                onClick={() => {
-                  setShowSelector(!showSelector);
-                }}
-              >
-                {move ? ' change move' : 'select move'}
-              </button>
+              {!isView ? (
+                <input
+                  type="text"
+                  value={move}
+                  onChange={(e) => handleMoveChange(i, e)}
+                  placeholder="Move name"
+                />
+              ) : (
+                <p className="text">{move}</p>
+              )}
+              {/* {move ? (
+                <p
+                  onClick={() => {
+                    setShowSelector(!showSelector);
+                  }}
+                >
+                  {move}
+                </p>
+              ) : (
+                <button
+                  className="button-sm"
+                  onClick={() => {
+                    setShowSelector(!showSelector);
+                  }}
+                >
+                  select move
+                </button>
+              )} */}
               {/* <select>
                 <option>Option</option>
               </select> */}
@@ -113,26 +137,32 @@ function Sequence({
                 <DetailSelector
                   selectMove={selectMove}
                   i={i}
+                  key={i}
                   onClick={() => {
                     setShowSelector(false);
                   }}
                 />
               )}
-              <div className="buttonContainer">
-                {sequence.moves.length > 1 && (
-                  <button
-                    className="button-sm"
-                    onClick={() => handleRemoveMove(i)}
-                  >
-                    {/* Remove move */} -
-                  </button>
-                )}
-                {i === sequence.moves.length - 1 && (
-                  <button onClick={handleAddMove} className="button-sm-confirm">
-                    {/* Add move */} +
-                  </button>
-                )}
-              </div>
+              {!isView && (
+                <div className="buttonContainer">
+                  {sequence.moves.length > 1 && (
+                    <button
+                      className="button-sm"
+                      onClick={() => handleRemoveMove(i)}
+                    >
+                      {/* Remove move */} -
+                    </button>
+                  )}
+                  {i === sequence.moves.length - 1 && (
+                    <button
+                      onClick={handleAddMove}
+                      className="button-sm-confirm"
+                    >
+                      {/* Add move */} +
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -15,12 +15,12 @@
 .navButton {
   background-color: var(--accent);
   border: none;
-  border-radius: 10px;
-  padding: 15px 15px;
+  /* border-radius: 10px; */
+  padding: 1rem;
   font-size: medium;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); */
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   opacity: 0.8 transparent;
@@ -28,9 +28,16 @@
   text-decoration: none;
 }
 
+@media only screen and (max-width: 600px) {
+  .navButton {
+    padding: 2px;
+    margin: 2px;
+  }
+}
+
 /* When you mouse over the navigation links, change their color */
 .navButton:hover {
-  color: #f1f1f1;
+  color: black;
   background-color: var(--foreground-primary);
 }
 

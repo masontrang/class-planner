@@ -6,9 +6,9 @@ import Section from '../components/Section';
 import { useState, useEffect } from 'react';
 function ClassCreation() {
   const [isEdit, setIsEdit] = useState(false);
-  const [classesLength, setClassesLength] = useState();
+
   const newData = {
-    id: classesLength,
+    id: 9,
     name: '',
     date: '',
     sections: [
@@ -35,7 +35,6 @@ function ClassCreation() {
       .then((response) => response.json())
       .then((data) => {
         setAllMoves(data);
-        setClassesLength(data.length);
       });
   }, []);
 

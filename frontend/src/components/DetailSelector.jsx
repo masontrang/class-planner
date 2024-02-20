@@ -18,6 +18,20 @@ function DetailSelector(props) {
         setMoveTypes(moveTypes);
       });
   }, []);
+
+  const moveInput = (
+    <div>
+      <input></input>
+    </div>
+  );
+  function addMove() {
+    const newMove = {
+      name: '',
+      moveType: '',
+      description: '',
+    };
+    setMoves([...moves, newMove]);
+  }
   return (
     <div classname="DetailSelector">
       <div
@@ -25,8 +39,8 @@ function DetailSelector(props) {
           position: 'absolute',
           right: '0px',
           top: '0px',
-          borderTopLeftRadius: '1rem',
-          borderBottomLeftRadius: '1rem',
+          // borderTopLeftRadius: '1rem',
+          // borderBottomLeftRadius: '1rem',
           paddingLeft: '1rem',
           paddingRight: '1rem',
           width: '30vw',
@@ -38,26 +52,40 @@ function DetailSelector(props) {
           flexDirection: 'column',
         }}
       >
-        <div>
-          <label>Add Move</label>
-          <button className="BigButton" onClick={() => {}}>
-            Add move
-          </button>
-        </div>
+        <div></div>
         {moves &&
-          moves.map((move) => (
-            <div>
-              <button
-                className="BigButton"
-                onClick={() => {
-                  props.selectMove(props.i, move.name);
-                }}
-              >
-                {move.name} - {move.moveType.name}
-              </button>
-            </div>
-          ))}
+          moves
+            .sort((a, b) => {
+              if (a.name < b.name) {
+                return -1;
+              }
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            })
+            .map((move) =>
+              move.name ? (
+                <div>
+                  <button
+                    className="BigButton"
+                    onClick={() => {
+                      props.selectMove(props.i, move.name);
+                    }}
+                  >
+                    {move.name} - {move.moveType.name}
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <input className="BigButton"></input>
+                </div>
+              )
+            )}
 
+        <button className="BigButton" onClick={addMove}>
+          Add move
+        </button>
         <button onClick={props.onClick} className="BigButton">
           Close
         </button>

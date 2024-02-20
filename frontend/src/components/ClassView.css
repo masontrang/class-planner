@@ -1,9 +1,45 @@
 .ClassView {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  /* width: 100%; */
+
   margin-top: 1rem;
+  /* margin: 1rem; */
+  padding: 1rem;
 }
+
+@media only screen and (max-width: 600px) {
+  .ClassView {
+    padding: 2px;
+    margin-top: 2px;
+  }
+
+  .Sections {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    /* width: 100%; */
+    /* margin-top: 1rem; */
+    /* margin: 1rem; */
+  }
+  .Section {
+    width: 30%;
+  }
+
+  .text {
+    margin-left: 0px;
+  }
+  .data-header-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+/* 
+.data-header-view {
+  margin: 1rem;
+} */
 
 .header {
   align-self: center;
@@ -22,7 +58,7 @@
   font-size: x-large;
   font-weight: bolder;
   border: none;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   padding: 30px 30px;
   font-size: 18px;
   font-weight: bold;
@@ -46,4 +82,9 @@
 
 .BigButtonCancel:hover {
   background-color: var(--foreground-primary);
+}
+
+.text {
+  margin-left: 1rem;
+  /* color: red; */
 }

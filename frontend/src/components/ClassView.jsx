@@ -19,13 +19,19 @@ function ClassView(props) {
   //   }, [classId]);
 
   const [data, setData] = useState();
-
+  const [date, setDate] = useState();
+  // let date = 0;
   useEffect(() => {
     // Fetch data from the backend
     fetch(`http://localhost:8000/classes/${Number(classId)}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data[0]);
+        const inputDate = new Date(data[0].date);
+        const date = `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${
+          inputDate.getFullYear() % 100
+        }`;
+        setDate(date);
       });
   }, []);
   console.log('fetch data', data);
@@ -53,10 +59,10 @@ function ClassView(props) {
   return (
     <div className="ClassView">
       {data && (
-        <div className="header">
-          <h1>Class: {data.id}</h1>
+        <div className="data-header-view">
+          {/* <h1>Class: {data.id}</h1> */}
           <h2>{data.name}</h2>
-          <h3>Date: {data.date}</h3>
+          <h3>Date: {date}</h3>
         </div>
       )}
 
@@ -84,9 +90,7 @@ function ClassView(props) {
                   </form>
                 </div>
               ))}
-            <button className="BigButton" onClick={clickHandler}>
-              + Add Section
-            </button>
+
             <div style={{ display: 'flex' }}>
               <button
                 className="BigButtonSave"
@@ -107,10 +111,12 @@ function ClassView(props) {
           // not editing
           <>
             {data &&
-              data.sections.map((section) => <Section section={section} />)}
-            <button className="BigButton" onClick={() => setIsEdit(!isEdit)}>
+              data.sections.map((section) => (
+                <Section section={section} isView={true} />
+              ))}
+            {/* <button className="BigButton" onClick={() => setIsEdit(!isEdit)}>
               Edit
-            </button>
+            </button> */}
           </>
         )}
       </div>

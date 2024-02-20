@@ -98,7 +98,7 @@ function SongSearch() {
       });
   }
   return (
-    <div style={{ border: '1px solid red', padding: '1rem' }}>
+    <div style={{}}>
       <h1>Song Library</h1>
       {songs && songs.length > 0 ? (
         <table className="songTable">
@@ -171,6 +171,7 @@ function SongSearch() {
           name="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="searchInput"
         ></input>
         <button type="submit" className="button-sm">
           Submit
