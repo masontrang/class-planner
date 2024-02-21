@@ -30,7 +30,7 @@ function Section({
   const handleAddSequence = () => {
     const newSequence = {
       song: '',
-      moves: [''],
+      moves: ['', '', ''],
       notes: '',
     };
     updateSection({

@@ -2,10 +2,11 @@ import './ClassView.css';
 import data from '../data.json';
 import Section from './Section';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function ClassView(props) {
   let { classId } = useParams();
+  let navigate = useNavigate();
   //   const [classId, setClassId] = useState(props.classId);
   //   const [class1, setClass1] = useState(false);
 
@@ -63,6 +64,12 @@ function ClassView(props) {
           {/* <h1>Class: {data.id}</h1> */}
           <h2>{data.name}</h2>
           <h3>Date: {date}</h3>
+          <button
+            className="button-sm"
+            onClick={() => navigate(`/classcreation/${data.id}`)}
+          >
+            Edit
+          </button>
         </div>
       )}
 

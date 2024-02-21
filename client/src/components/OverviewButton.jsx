@@ -6,8 +6,8 @@ function OverviewButton(props) {
   }`;
   return (
     <button className="OverviewButton" onClick={props.onClick}>
-      <h1>{props.id}</h1>
-      <p>{date}</p>
+      <p className="button-label">{props.name ? props.name : 'Class '}</p>
+      <p className="button-date">{date}</p>
     </button>
   );
 }

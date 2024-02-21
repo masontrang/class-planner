@@ -3,7 +3,7 @@
   flex-direction: column;
   /* width: 100%; */
 
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   /* margin: 1rem; */
   padding: 1rem;
 }
@@ -17,13 +17,14 @@
   .Sections {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     /* width: 100%; */
     /* margin-top: 1rem; */
     /* margin: 1rem; */
+    max-height: 100vh;
   }
   .Section {
-    width: 30%;
+    /* width: 20%; */
   }
 
   .text {
@@ -86,5 +87,6 @@
 
 .text {
   margin-left: 1rem;
+  margin: 4px;
   /* color: red; */
 }

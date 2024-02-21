@@ -94,7 +94,9 @@ function Sequence({
             </div>
           </>
         ) : (
-          <p className="text">{sequence.song}</p>
+          <p className="text" style={{ fontWeight: 'bold  ' }}>
+            {sequence.song}
+          </p>
         )}
       </div>
       <div className="sequence-body">

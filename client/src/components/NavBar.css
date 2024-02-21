@@ -1,21 +1,20 @@
 .NavBar {
   display: flex;
   /* height: 100px; */
-  color: var(--background-primary);
+  background-color: var(--accent);
   /* background-color: red;  */
   /* width: 100%; */
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   border-bottom: 4px solid var(--background-secondary);
   width: 100%;
-  background-color: white;
+  /* background-color: white; */
 }
 
 .navButton {
   background-color: var(--accent);
-  border: none;
-  /* border-radius: 10px; */
+
   padding: 1rem;
   font-size: medium;
   font-weight: bold;
@@ -24,25 +23,29 @@
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   opacity: 0.8 transparent;
-  margin: 1rem;
+  margin: 4px;
   text-decoration: none;
+  /* border: 1px solid black; */
 }
 
 @media only screen and (max-width: 600px) {
+  .NavBar {
+    justify-content: space-evenly;
+  }
   .navButton {
     padding: 2px;
-    margin: 2px;
+    /* margin: 2px; */
   }
 }
 
 /* When you mouse over the navigation links, change their color */
 .navButton:hover {
   color: black;
-  background-color: var(--foreground-primary);
+  background-color: var(--accent);
 }
 
 /* Actively selected NavLink */
-.active {
+.navButton:active {
   font-weight: bold;
   background-color: var(--foreground-primary);
 }

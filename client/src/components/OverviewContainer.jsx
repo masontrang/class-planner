@@ -27,7 +27,7 @@ function OverviewContainer(props) {
       {data &&
         data.map((item) => (
           <OverviewButton
-            id={item.id}
+            name={item.name}
             date={item.date}
             onClick={() => clickHandler(item.id)}
           />

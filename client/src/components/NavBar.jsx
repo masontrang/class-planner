@@ -12,7 +12,7 @@ function NavBar(props) {
       <NavLink className="navButton" to="overview">
         Overview
       </NavLink>
-      <NavLink className="navButton" to="classcreation">
+      <NavLink className="navButton" to="classcreation/new">
         Class Creator
       </NavLink>
       <NavLink className="navButton" to="editor">

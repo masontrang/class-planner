@@ -48,7 +48,7 @@ app.post('/classes', async (req, res) => {
   try {
     const class1 = new Class(req.body);
     await class1.save();
-    res.status(201).send({ message: 'class successfully added' });
+    res.status(201).json({ status: 'Message received successfully' });
   } catch (err) {
     res.status(400).send(err);
   }

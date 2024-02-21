@@ -19,7 +19,7 @@ function App() {
 
           <Route path="/" element={<Home />} />
           <Route path="/overview" element={<Overview />} />
-          <Route path="/classcreation" element={<ClassCreation />} />
+          <Route path="/classcreation/:classId" element={<ClassCreation />} />
           <Route path="/class/:classId" element={<ClassPage />} />
           <Route path="/editor" element={<Editor />} />
         </Routes>

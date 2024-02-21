@@ -4,11 +4,16 @@ import './ClassCreation.css';
 import Selector from '../components/DetailSelector';
 import Section from '../components/Section';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 function ClassCreation() {
+  let { classId } = useParams(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [message, setMessage] = useState('');
+  const [classData, setClassData] = useState();
+  // const [classData, setClassData] = useState();
 
   const newData = {
-    id: 9,
+    id: '',
     name: '',
     date: '',
     sections: [
@@ -18,7 +23,18 @@ function ClassCreation() {
         sequence: [
           {
             song: '',
-            moves: [''],
+            moves: ['', '', ''],
+            notes: '',
+          },
+        ],
+      },
+      {
+        id_1: '',
+        name: 'Warm Up',
+        sequence: [
+          {
+            song: '',
+            moves: ['', '', ''],
             notes: '',
           },
         ],
@@ -28,6 +44,26 @@ function ClassCreation() {
 
   const [data, setData] = useState(newData);
   const [allMoves, setAllMoves] = useState();
+
+  useEffect(() => {
+    // Fetch data from the backend
+    if (classId !== 'new') {
+      fetch(`http://localhost:8000/classes/${Number(classId)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('datafetch', data);
+          // setData(newData);
+          setData(data[0]);
+
+          // const inputDate = new Date(data[0].date);
+          // const date = `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${
+          //   inputDate.getFullYear() % 100
+          // }`;
+        });
+    } else {
+      setData(newData);
+    }
+  }, [classId]);
 
   useEffect(() => {
     // Fetch data from the backend
@@ -163,7 +199,7 @@ function ClassCreation() {
       sequence: [
         {
           song: '',
-          moves: [''],
+          moves: ['', '', ''],
           notes: '',
         },
       ],
@@ -192,34 +228,39 @@ function ClassCreation() {
       <div className="ClassView">
         {/* <NavBar title="CLASS CREATION" /> */}
         <div className="data">
-          <div className="data-header">
-            <input
-              type="text"
-              value={data.name}
-              onChange={handleNameChange}
-              placeholder="Class name"
-            />
-            <input
-              type="date"
-              value={data.date}
-              onChange={handleDateChange}
-              placeholder="Data date"
-            />
-          </div>
-          <div className="data-body">
-            {data.sections.map((sec, i) => (
-              <Section
-                key={i}
-                section={sec}
-                updateSection={(newSec) => handleUpdateSection(i, newSec)}
-                removeSection={() => handleRemoveSection(i)}
-                addSection={handleAddSection}
-                sectionsLength={data.sections.length}
+          {data && (
+            <div className="data-header">
+              <input
+                type="text"
+                value={data.name}
+                onChange={handleNameChange}
+                placeholder="Class name"
               />
-            ))}
+              <input
+                type="date"
+                value={data.date}
+                onChange={handleDateChange}
+                placeholder="Data date"
+              />
+            </div>
+          )}
+          <div className="data-body">
+            {data &&
+              data.sections.map((sec, i) => (
+                <Section
+                  key={i}
+                  section={sec}
+                  updateSection={(newSec) => handleUpdateSection(i, newSec)}
+                  removeSection={() => handleRemoveSection(i)}
+                  addSection={handleAddSection}
+                  sectionsLength={data.sections.length}
+                />
+              ))}
           </div>
         </div>
+
         <div className="data-footer">
+          <p> {message && message}</p>
           <button onClick={handleSubmit} className="button-sm-confirm">
             Submit
           </button>

@@ -2,7 +2,7 @@
   .OverviewButton {
     margin: 2px;
     font-size: small;
-    font-weight: 800;
+    /* font-weight: 800; */
     padding: 2px;
   }
   h1 {
@@ -10,6 +10,13 @@
   }
   p {
     margin: 2px;
+  }
+  .button-label {
+    font-size: medium;
+  }
+
+  .button-date {
+    font-size: small;
   }
 }
 .OverviewButton {
@@ -33,4 +40,12 @@
   align-items: center;
   justify-content: center;
   word-wrap: break-word;
+}
+
+.button-label {
+  font-size: large;
+}
+
+.button-date {
+  font-size: medium;
 }
